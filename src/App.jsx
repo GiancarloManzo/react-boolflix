@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { searchMovies, searchTv } from "./api/tmdb";
+import SearchBar from "./components/SearchBar";
+import ResultsList from "./components/ResultsList";
 
 export default function App() {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
-  const [error, setError] = useState("");
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSearch() {
-    const q = query.trim();
+  function handleSearch(text) {
+    const q = text.trim();
     if (!q) return;
 
     setLoading(true);
@@ -21,39 +22,27 @@ export default function App() {
           media_type: "movie",
         }));
         const tvs = tvData.results.map((t) => ({ ...t, media_type: "tv" }));
-        setResults([...movies, ...tvs]);
+        setItems([...movies, ...tvs]);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>BoolFlix</h1>
+    <div className="min-vh-100 bg-black text-light">
+      <header className="border-bottom border-secondary">
+        <div className="container py-4 d-flex flex-column flex-md-row gap-3 align-items-md-center justify-content-between">
+          <h1 className="m-0 text-danger fw-bold">BOOLFLIX</h1>
+          <div style={{ width: "100%", maxWidth: 560 }}>
+            <SearchBar onSearch={handleSearch} loading={loading} />
+          </div>
+        </div>
+      </header>
 
-      <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Cerca un film o una serie..."
-          style={{ flex: 1, padding: 8 }}
-        />
-        <button onClick={handleSearch} style={{ padding: "8px 12px" }}>
-          Cerca
-        </button>
-      </div>
-
-      {loading && <p>Caricamento...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <ul>
-        {results.map((item) => (
-          <li key={`${item.media_type}-${item.id}`}>
-            {item.media_type === "tv" ? item.name : item.title} (
-            {item.media_type})
-          </li>
-        ))}
-      </ul>
+      <main className="container py-4">
+        {error && <div className="alert alert-danger">{error}</div>}
+        <ResultsList items={items} />
+      </main>
     </div>
   );
 }
