@@ -66,3 +66,135 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* poster uniforme */
+.media-card .card-img-top {
+  height: 360px;
+  object-fit: cover;
+}
+
+/* titolo 1 riga */
+.media-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* testo più piccolo */
+.media-meta {
+  font-size: 0.9rem;
+}
+/* Netflix-like hover */
+.media-card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.media-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.media-overlay {
+  position: absolute;
+  inset: 0;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.78);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.media-card:hover .media-overlay {
+  opacity: 1;
+}
+
+.media-overview {
+  font-size: 0.9rem;
+  line-height: 1.2rem;
+  max-height: 4.8rem; /* ~4 righe */
+  overflow: hidden;
+}
+/* GRID più Netflix */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+/* CARD = poster */
+.nx-card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #111;
+  aspect-ratio: 2 / 3; /* poster */
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.nx-card:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+}
+
+/* poster come background */
+.nx-poster {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.05);
+}
+
+/* overlay solo hover */
+.nx-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.92) 0%,
+    rgba(0, 0, 0, 0.55) 45%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+}
+
+.nx-card:hover .nx-overlay {
+  opacity: 1;
+}
+
+.nx-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin: 0 0 6px;
+}
+
+.nx-meta {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.nx-overview {
+  font-size: 0.82rem;
+  line-height: 1.1rem;
+  max-height: 4.4rem; /* ~4 righe */
+  overflow: hidden;
+  opacity: 0.9;
+}
