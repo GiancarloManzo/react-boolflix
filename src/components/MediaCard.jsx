@@ -1,73 +1,58 @@
+const IMG_BASE = "https://image.tmdb.org/t/p/w342";
+
+function toStars(voteAverage) {
+  const v = Number(voteAverage) || 0;
+  const five = Math.round(v / 2);
+  return "★".repeat(five) + "☆".repeat(5 - five);
+}
+
 export default function MediaCard({ item }) {
-  const IMAGE_BASE = "https://image.tmdb.org/t/p/w342";
-  const FALLBACK = "https://via.placeholder.com/342x513?text=No+Poster";
+  const title = item.title || item.name;
+  const original = item.original_title || item.original_name;
 
-  const title = item.media_type === "tv" ? item.name : item.title;
-  const originalTitle =
-    item.media_type === "tv" ? item.original_name : item.original_title;
-
-  function renderStars(voteAverage) {
-    const stars = Math.ceil(voteAverage / 2);
-    const max = 5;
-    return "★".repeat(stars) + "☆".repeat(max - stars);
-  }
-
-  function getFlag(lang) {
-    const map = {
-      en: "gb",
-      it: "it",
-      fr: "fr",
-      es: "es",
-      de: "de",
-      ja: "jp",
-      ko: "kr",
-      zh: "cn",
-    };
-    return map[lang] || "xx";
-  }
-
-  const posterUrl = item.poster_path ? IMAGE_BASE + item.poster_path : FALLBACK;
+  const imgPath = item.poster_path || item.backdrop_path;
+  const imgUrl = imgPath ? `${IMG_BASE}${imgPath}` : null;
 
   return (
-    <div className="nx-card">
-      <div
-        className="nx-poster"
-        style={{ backgroundImage: `url(${posterUrl})` }}
-        aria-label={title}
-      />
-
-      <div className="nx-overlay">
-        <h5 className="nx-title">{title}</h5>
-
-        <div className="nx-meta">
-          <span>{renderStars(item.vote_average)}</span>
-          <span className="text-secondary">
-            ({item.vote_average.toFixed(1)})
-          </span>
+    <article className="bf-card">
+      <div className="bf-poster">
+        {imgUrl ? (
           <img
-            src={`https://flagcdn.com/24x18/${getFlag(item.original_language)}.png`}
-            alt={item.original_language}
-            style={{ marginLeft: 4 }}
+            className="bf-poster__img"
+            src={imgUrl}
+            alt={title}
+            loading="lazy"
           />
-          <span className="badge text-bg-secondary">
-            {item.media_type === "tv" ? "TV" : "MOVIE"}
-          </span>
+        ) : (
+          <div className="bf-poster__fallback">No Poster</div>
+        )}
+
+        {/* Title strip ALWAYS visible */}
+        <div className="bf-titleStrip">
+          <h3 className="bf-title">{title}</h3>
         </div>
 
-        <div className="nx-overview">
-          <strong>Overview:</strong>{" "}
-          {item.overview && item.overview.trim()
-            ? item.overview
-            : "Nessuna descrizione disponibile."}
-        </div>
+        {/* Hover overlay */}
+        <div className="bf-overlay">
+          <div className="bf-topRow">
+            <span
+              className={`bf-pill ${item.media_type === "tv" ? "is-tv" : "is-movie"}`}
+            >
+              {item.media_type === "tv" ? "SERIE" : "FILM"}
+            </span>
+            <span className="bf-pill is-lang">
+              {(item.original_language || "—").toUpperCase()}
+            </span>
+            <span className="bf-stars">{toStars(item.vote_average)}</span>
+          </div>
 
-        <div
-          className="text-secondary"
-          style={{ fontSize: "0.78rem", marginTop: 6 }}
-        >
-          <strong>Orig:</strong> {originalTitle}
+          <p className="bf-original">Titolo originale: {original || "—"}</p>
+
+          <p className={`bf-overview ${item.overview ? "" : "is-empty"}`}>
+            {item.overview || "Nessuna overview disponibile."}
+          </p>
         </div>
       </div>
-    </div>
+    </article>
   );
 }

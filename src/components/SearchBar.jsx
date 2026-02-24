@@ -1,23 +1,19 @@
-import { useState } from "react";
-
-export default function SearchBar({ onSearch, loading }) {
-  const [text, setText] = useState("");
-
-  function handleSubmit(e) {
+export default function SearchBar({ query, setQuery, onSearch }) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(text);
-  }
+    onSearch();
+  };
 
   return (
-    <form className="d-flex gap-2" onSubmit={handleSubmit}>
+    <form className="d-flex" onSubmit={handleSubmit}>
       <input
-        className="form-control"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Cerca un film o una serie..."
+        className="form-control form-control-sm me-2"
+        placeholder="Cerca film o serie..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
       />
-      <button className="btn btn-danger" type="submit" disabled={loading}>
-        {loading ? "..." : "Cerca"}
+      <button className="btn btn-sm btn-danger" type="submit">
+        Cerca
       </button>
     </form>
   );
