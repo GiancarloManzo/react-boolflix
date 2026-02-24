@@ -165,3 +165,22 @@
 .bf-overview.is-empty {
   color: rgba(255, 255, 255, 0.65);
 }
+/* TOPBAR sempre visibile sopra le card */
+.nf-topbar {
+  position: sticky;
+  top: 70px; /* sotto la navbar */
+  z-index: 3000;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+}
+
+/* bottone ben visibile sempre */
+.nf-topbar .btn-danger {
+  background: #e50914 !important;
+  border-color: #e50914 !important;
+  color: #fff !important;
+  font-weight: 800;
+}
